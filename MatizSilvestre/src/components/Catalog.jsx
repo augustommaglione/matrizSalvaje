@@ -1,0 +1,274 @@
+import React, { useState } from 'react';
+
+export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
+  // Store selected fragrance and quantity per product ID
+  const [selections, setSelections] = useState(() => {
+    const initial = {};
+    products.forEach((prod) => {
+      initial[prod.id] = {
+        fragranceId: prod.fragrances[0]?.id || '',
+        quantity: 1
+      };
+    });
+    return initial;
+  });
+
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const handleFragranceChange = (productId, fragranceId) => {
+    setSelections((prev) => ({
+      ...prev,
+      [productId]: {
+        ...prev[productId],
+        fragranceId
+      }
+    }));
+  };
+
+  const handleQuantityChange = (productId, delta) => {
+    setSelections((prev) => {
+      const currentQty = prev[productId]?.quantity || 1;
+      const newQty = Math.max(1, currentQty + delta);
+      return {
+        ...prev,
+        [productId]: {
+          ...prev[productId],
+          quantity: newQty
+        }
+      };
+    });
+  };
+
+  const handleAdd = (product) => {
+    const currentSel = selections[product.id] || {
+      fragranceId: product.fragrances[0]?.id,
+      quantity: 1
+    };
+
+    const selectedFragrance = product.fragrances.find(
+      (f) => f.id === currentSel.fragranceId
+    ) || product.fragrances[0];
+
+    onAddToCart({
+      productId: product.id,
+      productName: product.name,
+      volume: product.volume,
+      price: product.price,
+      image: product.image,
+      fragrance: selectedFragrance,
+      quantity: currentSel.quantity || 1
+    });
+
+    setToastMessage(`Añadiste "${product.name} (${selectedFragrance.name})" a tu bolsa.`);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3500);
+  };
+
+  // Helper format currency
+  const formatPrice = (val) => {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+      maximumFractionDigits: 0
+    }).format(val);
+  };
+
+  return (
+    <section id="catalogo" className="py-5 bg-canvas position-relative">
+      
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div 
+          className="position-fixed top-0 start-50 translate-middle-x mt-4 shadow-lg border border-gold bg-white p-3 d-flex align-items-center gap-3"
+          style={{ zIndex: 1060, maxWidth: '90%' }}
+        >
+          <i className="bi bi-bag-check-fill text-gold fs-4"></i>
+          <div>
+            <strong className="d-block small text-dark">¡Producto Agregado!</strong>
+            <span className="small text-muted">{toastMessage}</span>
+          </div>
+          <button 
+            type="button" 
+            className="btn-close ms-auto small" 
+            onClick={() => setToastMessage(null)}
+          ></button>
+        </div>
+      )}
+
+      <div className="container py-4">
+        
+        {/* Section Header */}
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+          <div>
+            <span className="badge-outline-gold mb-2 d-inline-block">
+              Creaciones de Autor
+            </span>
+            <h2 className="display-6 font-serif text-dark mb-1">
+              Catálogo de Fragancias & Difusión
+            </h2>
+            <div className="gold-divider-start"></div>
+            <p className="text-muted small mb-0">
+              Explora nuestros 3 formatos icónicos y selecciona la fragancia que resuena con tu espacio.
+            </p>
+          </div>
+
+          <div className="mt-3 mt-md-0 d-flex gap-2">
+            <button
+              onClick={onOpenAdmin}
+              className="btn btn-sm btn-outline-gold d-flex align-items-center gap-2"
+              title="Permite al administrador añadir nuevas fragancias"
+            >
+              <i className="bi bi-plus-circle text-gold"></i>
+              <span>Gestionar Fragancias</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 3 Main Products Grid */}
+        <div className="row g-4 justify-content-center">
+          {products.map((product) => {
+            const productSelection = selections[product.id] || {
+              fragranceId: product.fragrances[0]?.id || '',
+              quantity: 1
+            };
+
+            const selectedFragrance = product.fragrances.find(
+              (f) => f.id === productSelection.fragranceId
+            ) || product.fragrances[0];
+
+            return (
+              <div key={product.id} className="col-12 col-md-6 col-lg-4">
+                <div className="lux-card h-100 d-flex flex-column">
+                  
+                  {/* Image container with badges */}
+                  <div className="product-img-wrapper">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      loading="lazy"
+                    />
+                    <div className="position-absolute top-0 start-0 m-3">
+                      <span className="badge-gold">{product.badge}</span>
+                    </div>
+                    <div className="position-absolute top-0 end-0 m-3">
+                      <span className="badge bg-dark text-white rounded-0 px-2 py-1 small">
+                        {product.volume}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Body */}
+                  <div className="p-4 d-flex flex-column flex-grow-1">
+                    
+                    <div className="d-flex justify-content-between align-items-baseline mb-1">
+                      <small className="text-muted text-uppercase tracking-wider" style={{ fontSize: '0.65rem' }}>
+                        {product.category}
+                      </small>
+                      <h4 className="font-serif text-gold-dark mb-0 fw-bold">
+                        {formatPrice(product.price)}
+                      </h4>
+                    </div>
+
+                    <h3 className="font-serif fs-4 text-dark mb-2">
+                      {product.name}
+                    </h3>
+
+                    <p className="text-muted small mb-3" style={{ minHeight: '44px' }}>
+                      {product.description}
+                    </p>
+
+                    <hr className="my-2 border-gold opacity-25" />
+
+                    {/* Fragrance Selector */}
+                    <div className="my-3">
+                      <div className="d-flex justify-content-between align-items-center mb-2">
+                        <label className="form-label small fw-bold mb-0 text-dark">
+                          Fragancia disponible:
+                        </label>
+                        <small className="text-muted" style={{ fontSize: '0.72rem' }}>
+                          {product.fragrances.length} variantes
+                        </small>
+                      </div>
+
+                      <select
+                        className="form-select lux-input mb-3"
+                        value={selectedFragrance ? selectedFragrance.id : ''}
+                        onChange={(e) => handleFragranceChange(product.id, e.target.value)}
+                      >
+                        {product.fragrances.map((frag) => (
+                          <option key={frag.id} value={frag.id}>
+                            {frag.name} {frag.family ? `(${frag.family})` : ''}
+                          </option>
+                        ))}
+                      </select>
+
+                      {/* Olfactory Notes Box for the selected fragrance */}
+                      {selectedFragrance && (
+                        <div className="p-3 bg-gold-soft border border-gold mb-3" style={{ borderRadius: '1px' }}>
+                          <div className="d-flex align-items-center gap-1 mb-1">
+                            <i className="bi bi-droplet-fill text-gold small"></i>
+                            <span className="small fw-bold text-dark">
+                              Familia: {selectedFragrance.family || 'Aromática'}
+                            </span>
+                          </div>
+                          <p className="small text-muted mb-0 fst-italic" style={{ fontSize: '0.78rem' }}>
+                            "{selectedFragrance.notes || 'Notas sutiles y envolventes.'}"
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Quantity & Add to Cart button */}
+                    <div className="mt-auto pt-2">
+                      <div className="row g-2 align-items-center">
+                        <div className="col-4">
+                          <div className="input-group border border-secondary border-opacity-25">
+                            <button
+                              className="btn btn-sm btn-outline-secondary border-0 px-2"
+                              type="button"
+                              onClick={() => handleQuantityChange(product.id, -1)}
+                            >
+                              -
+                            </button>
+                            <input
+                              type="text"
+                              className="form-control form-control-sm text-center border-0 bg-transparent fw-bold p-0"
+                              value={productSelection.quantity}
+                              readOnly
+                            />
+                            <button
+                              className="btn btn-sm btn-outline-secondary border-0 px-2"
+                              type="button"
+                              onClick={() => handleQuantityChange(product.id, 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="col-8">
+                          <button
+                            type="button"
+                            onClick={() => handleAdd(product)}
+                            className="btn btn-gold w-100 py-2 d-flex align-items-center justify-content-center gap-2"
+                          >
+                            <i className="bi bi-bag-plus"></i>
+                            <span>Agregar</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    </section>
+  );
+}
