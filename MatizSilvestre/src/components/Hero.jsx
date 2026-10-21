@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Hero() {
   return (
     <section className="hero-wrapper py-5">
@@ -10,17 +8,16 @@ export default function Hero() {
           <div className="col-lg-7 text-center text-lg-start">
             <div className="hero-badge mb-3">
               <i className="bi bi-stars"></i>
-              <span>Colección Botánica & Textil</span>
+              <span>???</span>
             </div>
 
             <h1 className="display-4 fw-light mb-3 text-dark">
               Aromas que transforman <br />
-              <span className="fst-italic text-gold">la calma de tus espacios</span>
+              <span className="fst-italic text-gold-dark"> tus espacios</span>
             </h1>
 
             <p className="lead text-muted fs-6 mb-4 pe-lg-5" style={{ maxWidth: '580px' }}>
-              En <strong>Matiz Silvestre</strong> elaboramos perfumería artesanal y textil en pequeños lotes, 
-              fusionando esencias botánicas puras con maderas nobles para crear atmósferas de serenidad y sofisticación.
+              En <strong>Matiz Silvestre</strong> elaboramos perfumería artesanal y textil en pequeños lotes.
             </p>
 
             <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start mb-5">
@@ -35,33 +32,33 @@ export default function Hero() {
             {/* Quick Badges */}
             <div className="row g-3 pt-3 border-top border-gold text-start">
               <div className="col-4">
-                <div className="d-flex align-items-center gap-2">
+                {/*<div className="d-flex align-items-center gap-2">
                   <i className="bi bi-droplet-half text-gold fs-5"></i>
                   <div>
                     <h6 className="mb-0 small fw-bold">Maceración</h6>
                     <small className="text-muted" style={{ fontSize: '0.7rem' }}>Artesanal</small>
                   </div>
-                </div>
+                </div>*/}
               </div>
 
               <div className="col-4">
-                <div className="d-flex align-items-center gap-2">
+                {/*<div className="d-flex align-items-center gap-2">
                   <i className="bi bi-feather text-gold fs-5"></i>
                   <div>
                     <h6 className="mb-0 small fw-bold">Textiles</h6>
                     <small className="text-muted" style={{ fontSize: '0.7rem' }}>No mancha</small>
                   </div>
-                </div>
+                </div>*/}
               </div>
 
               <div className="col-4">
-                <div className="d-flex align-items-center gap-2">
+                {/*<div className="d-flex align-items-center gap-2">
                   <i className="bi bi-gem text-gold fs-5"></i>
                   <div>
                     <h6 className="mb-0 small fw-bold">Diseño Único</h6>
                     <small className="text-muted" style={{ fontSize: '0.7rem' }}>Facetado & noble</small>
                   </div>
-                </div>
+                </div>*/}
               </div>
             </div>
 
@@ -84,31 +81,16 @@ export default function Hero() {
 
                 <div className="pt-3 text-center">
                   <span className="badge-outline-gold d-inline-block mb-1">
-                    Edición Limitada
+                    Nueva Edición 
                   </span>
                   <p className="font-serif fs-5 mb-0 text-dark">
-                    Fragancias con Alma Silvestre
+                    Fragancia Bambú
                   </p>
                   <small className="text-muted" style={{ fontSize: '0.75rem' }}>
-                    Home Sprays 200ml &bull; Difusores Colgantes 8ml &bull; Gemas 10ml
+                    Home Sprays 200ml &bull; Difusores 8ml &bull; Gema Difusores 10ml
                   </small>
                 </div>
               </div>
-
-              {/* Decorative accent card */}
-              <div 
-                className="position-absolute d-none d-sm-block bg-white border border-gold p-3 shadow"
-                style={{ bottom: '-20px', left: '-25px', maxWidth: '190px' }}
-              >
-                <div className="d-flex align-items-center gap-2 mb-1">
-                  <i className="bi bi-check2-circle text-gold fs-5"></i>
-                  <span className="fw-bold small text-dark">100% Puro</span>
-                </div>
-                <small className="text-muted" style={{ fontSize: '0.68rem', lineHeight: '1.2' }}>
-                  Esencias libres de parabenos y no testeado en animales.
-                </small>
-              </div>
-
             </div>
           </div>
 

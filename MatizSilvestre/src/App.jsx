@@ -5,21 +5,12 @@ import Philosophy from './components/Philosophy';
 import Catalog from './components/Catalog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import AdminModal from './components/AdminModal';
 import CartDrawer from './components/CartDrawer';
 import { INITIAL_PRODUCTS, BRAND_INFO } from './data/initialData';
 
 function App() {
-  // Load products from localStorage or fallback
-  const [products, setProducts] = useState(() => {
-    try {
-      const saved = localStorage.getItem('matiz_products_v1');
-      if (saved) return JSON.parse(saved);
-    } catch (e) {
-      console.error('Error loading products from storage:', e);
-    }
-    return INITIAL_PRODUCTS;
-  });
+  // The catalog is edited directly in src/data/initialData.js
+  const products = INITIAL_PRODUCTS;
 
   // Load cart from localStorage or fallback
   const [cart, setCart] = useState(() => {
@@ -32,18 +23,7 @@ function App() {
     return [];
   });
 
-  // Modal and Drawer UI states
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-
-  // Sync products to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('matiz_products_v1', JSON.stringify(products));
-    } catch (e) {
-      console.error('Error saving products:', e);
-    }
-  }, [products]);
 
   // Sync cart to localStorage
   useEffect(() => {
@@ -54,49 +34,16 @@ function App() {
     }
   }, [cart]);
 
-  // Cart total items count
   const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-
-  // Admin handlers
-  const handleAddFragrance = (productId, newFragrance) => {
-    setProducts((prev) =>
-      prev.map((prod) => {
-        if (prod.id === productId) {
-          return {
-            ...prod,
-            fragrances: [...prod.fragrances, newFragrance]
-          };
-        }
-        return prod;
-      })
-    );
-  };
-
-  const handleDeleteFragrance = (productId, fragranceId) => {
-    setProducts((prev) =>
-      prev.map((prod) => {
-        if (prod.id === productId) {
-          return {
-            ...prod,
-            fragrances: prod.fragrances.filter((f) => f.id !== fragranceId)
-          };
-        }
-        return prod;
-      })
-    );
-  };
-
-  const handleResetDefaults = () => {
-    setProducts(INITIAL_PRODUCTS);
-  };
 
   // Cart Handlers
   const handleAddToCart = (newItem) => {
     setCart((prev) => {
-      // Check if product + fragrance already exists
+      // Same product + stone + fragrance is merged into a single line
       const existingIdx = prev.findIndex(
         (i) =>
           i.productId === newItem.productId &&
+          i.stone === newItem.stone &&
           i.fragrance.id === newItem.fragrance.id
       );
 
@@ -139,7 +86,6 @@ function App() {
       <Navbar
         cartCount={cartItemCount}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* Main Content */}
@@ -148,14 +94,13 @@ function App() {
         <Catalog
           products={products}
           onAddToCart={handleAddToCart}
-          onOpenAdmin={() => setIsAdminOpen(true)}
         />
         <Philosophy />
         <Contact />
       </main>
 
       {/* Footer */}
-      <Footer onOpenAdmin={() => setIsAdminOpen(true)} />
+      <Footer />
 
       {/* Floating Action Buttons */}
       <div className="floating-actions">
@@ -185,16 +130,6 @@ function App() {
           <i className="bi bi-whatsapp"></i>
         </a>
       </div>
-
-      {/* Admin Modal */}
-      <AdminModal
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        products={products}
-        onAddFragrance={handleAddFragrance}
-        onDeleteFragrance={handleDeleteFragrance}
-        onResetDefaults={handleResetDefaults}
-      />
 
       {/* Cart Drawer */}
       <CartDrawer

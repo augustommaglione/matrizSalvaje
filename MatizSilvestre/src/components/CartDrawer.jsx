@@ -1,5 +1,4 @@
-import React from 'react';
-import { BRAND_INFO } from '../data/initialData';
+import { BRAND_INFO, INITIAL_PRODUCTS } from '../data/initialData';
 
 export default function CartDrawer({
   isOpen,
@@ -11,7 +10,34 @@ export default function CartDrawer({
 }) {
   if (!isOpen) return null;
 
-  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  // Total units per product, regardless of the chosen fragrance
+  const productTotals = items.reduce((acc, item) => {
+    acc[item.productId] = (acc[item.productId] || 0) + item.quantity;
+    return acc;
+  }, {});
+
+  // Bulk unit price applies to every line of the product once the product
+  // total (all fragrances combined) exceeds the threshold.
+  const getUnitPrice = (item) => {
+    const meta = INITIAL_PRODUCTS.find((p) => p.id === item.productId);
+    const wholesalePrice = item.wholesalePrice ?? meta?.wholesalePrice;
+    const wholesaleMinQty = item.wholesaleMinQty ?? meta?.wholesaleMinQty;
+    const productQty = productTotals[item.productId] || item.quantity;
+
+    return wholesalePrice &&
+      wholesaleMinQty &&
+      productQty >= wholesaleMinQty
+      ? wholesalePrice
+      : item.price;
+  };
+
+  const total = items.reduce(
+    (acc, item) => acc + getUnitPrice(item) * item.quantity,
+    0
+  );
+
+  const getDisplayName = (item) =>
+    item.stone ? `${item.productName} ${item.stone}` : item.productName;
 
   const formatPrice = (val) => {
     return new Intl.NumberFormat('es-AR', {
@@ -27,9 +53,15 @@ export default function CartDrawer({
     let message = `¡Hola *${BRAND_INFO.name}*! 🌿 Deseo realizar un pedido artesanal:\n\n`;
 
     items.forEach((item, index) => {
-      const itemSubtotal = formatPrice(item.price * item.quantity);
-      message += `${index + 1}. *${item.quantity}x ${item.productName}* (${item.volume})\n`;
+      const unitPrice = getUnitPrice(item);
+      const itemSubtotal = formatPrice(unitPrice * item.quantity);
+      const bulkApplied = unitPrice !== item.price;
+      message += `${index + 1}. *${item.quantity}x ${getDisplayName(item)}* (${item.volume})\n`;
       message += `   ↳ Fragancia: _${item.fragrance.name}_\n`;
+      if (item.fragrance.stock === false) {
+        message += `   ↳ ⚠ *Con encargo* (se prepara a pedido)\n`;
+      }
+      message += `   ↳ Precio unitario: ${formatPrice(unitPrice)}${bulkApplied ? ' (precio por cantidad)' : ''}\n`;
       message += `   ↳ Subtotal: ${itemSubtotal}\n\n`;
     });
 
@@ -87,7 +119,7 @@ export default function CartDrawer({
               {items.map((item, idx) => (
                 <div 
                   key={`${item.productId}-${item.fragrance.id}-${idx}`}
-                  className="p-3 bg-light border border-secondary border-opacity-25 d-flex gap-3 position-relative"
+                  className="p-3 bg-light border border-gold d-flex gap-3 position-relative"
                 >
                   <img
                     src={item.image}
@@ -97,13 +129,23 @@ export default function CartDrawer({
 
                   <div className="flex-grow-1">
                     <h6 className="font-serif text-dark mb-0 fw-bold small">
-                      {item.productName}
+                      {getDisplayName(item)}
                     </h6>
                     <small className="text-muted d-block" style={{ fontSize: '0.72rem' }}>
                       {item.volume} &bull; {item.fragrance.name}
                     </small>
+                    {item.fragrance.stock === false && (
+                      <span className="stock-tag stock-tag-out mt-1">
+                        <i className="bi bi-clock-history"></i> Con encargo
+                      </span>
+                    )}
                     <span className="fw-bold text-gold-dark small d-block mt-1">
-                      {formatPrice(item.price)} c/u
+                      {formatPrice(getUnitPrice(item))} c/u
+                      {getUnitPrice(item) !== item.price && (
+                        <span className="text-muted fw-normal ms-1" style={{ fontSize: '0.68rem' }}>
+                          (precio por cantidad)
+                        </span>
+                      )}
                     </span>
 
                     {/* Quantity controls */}
@@ -129,7 +171,7 @@ export default function CartDrawer({
                       </div>
 
                       <span className="small fw-bold text-dark">
-                        {formatPrice(item.price * item.quantity)}
+                        {formatPrice(getUnitPrice(item) * item.quantity)}
                       </span>
                     </div>
                   </div>

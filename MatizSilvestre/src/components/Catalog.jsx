@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { GEMA_STONES } from '../data/initialData';
 
-export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
-  // Store selected fragrance and quantity per product ID
+export default function Catalog({ products, onAddToCart }) {
+  // Store selected fragrance, stone and quantity per product ID
   const [selections, setSelections] = useState(() => {
     const initial = {};
     products.forEach((prod) => {
       initial[prod.id] = {
         fragranceId: prod.fragrances[0]?.id || '',
+        stoneName: prod.hasStoneSelection ? GEMA_STONES[0]?.name || '' : '',
         quantity: 1
       };
     });
@@ -21,6 +23,16 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
       [productId]: {
         ...prev[productId],
         fragranceId
+      }
+    }));
+  };
+
+  const handleStoneChange = (productId, stoneName) => {
+    setSelections((prev) => ({
+      ...prev,
+      [productId]: {
+        ...prev[productId],
+        stoneName
       }
     }));
   };
@@ -42,6 +54,7 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
   const handleAdd = (product) => {
     const currentSel = selections[product.id] || {
       fragranceId: product.fragrances[0]?.id,
+      stoneName: product.hasStoneSelection ? GEMA_STONES[0]?.name || '' : '',
       quantity: 1
     };
 
@@ -49,17 +62,27 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
       (f) => f.id === currentSel.fragranceId
     ) || product.fragrances[0];
 
+    const selectedStone = product.hasStoneSelection
+      ? currentSel.stoneName || GEMA_STONES[0]?.name || ''
+      : '';
+
     onAddToCart({
       productId: product.id,
       productName: product.name,
+      stone: selectedStone,
       volume: product.volume,
       price: product.price,
+      wholesalePrice: product.wholesalePrice,
+      wholesaleMinQty: product.wholesaleMinQty,
       image: product.image,
       fragrance: selectedFragrance,
       quantity: currentSel.quantity || 1
     });
 
-    setToastMessage(`Añadiste "${product.name} (${selectedFragrance.name})" a tu bolsa.`);
+    const displayName = selectedStone
+      ? `${product.name} ${selectedStone}`
+      : product.name;
+    setToastMessage(`Añadiste "${displayName} (${selectedFragrance.name})" a tu bolsa.`);
     setTimeout(() => {
       setToastMessage(null);
     }, 3500);
@@ -102,26 +125,15 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
           <div>
             <span className="badge-outline-gold mb-2 d-inline-block">
-              Creaciones de Autor
+              Creaciones Artesanales
             </span>
             <h2 className="display-6 font-serif text-dark mb-1">
-              Catálogo de Fragancias & Difusión
+              Catálogo de Fragancias & Difusores
             </h2>
             <div className="gold-divider-start"></div>
             <p className="text-muted small mb-0">
-              Explora nuestros 3 formatos icónicos y selecciona la fragancia que resuena con tu espacio.
+              Explora nuestros tres formatos y selecciona la fragancia que resuena con tu espacio.
             </p>
-          </div>
-
-          <div className="mt-3 mt-md-0 d-flex gap-2">
-            <button
-              onClick={onOpenAdmin}
-              className="btn btn-sm btn-outline-gold d-flex align-items-center gap-2"
-              title="Permite al administrador añadir nuevas fragancias"
-            >
-              <i className="bi bi-plus-circle text-gold"></i>
-              <span>Gestionar Fragancias</span>
-            </button>
           </div>
         </div>
 
@@ -137,20 +149,22 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
               (f) => f.id === productSelection.fragranceId
             ) || product.fragrances[0];
 
+            const selectedStoneName = productSelection.stoneName || GEMA_STONES[0]?.name || '';
+            const selectedStone = product.hasStoneSelection
+              ? GEMA_STONES.find((s) => s.name === selectedStoneName) || GEMA_STONES[0]
+              : null;
+
             return (
               <div key={product.id} className="col-12 col-md-6 col-lg-4">
                 <div className="lux-card h-100 d-flex flex-column">
                   
-                  {/* Image container with badges */}
+                  {/* Image container with volume indicator */}
                   <div className="product-img-wrapper">
                     <img
                       src={product.image}
                       alt={product.name}
                       loading="lazy"
                     />
-                    <div className="position-absolute top-0 start-0 m-3">
-                      <span className="badge-gold">{product.badge}</span>
-                    </div>
                     <div className="position-absolute top-0 end-0 m-3">
                       <span className="badge bg-dark text-white rounded-0 px-2 py-1 small">
                         {product.volume}
@@ -170,15 +184,36 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
                       </h4>
                     </div>
 
-                    <h3 className="font-serif fs-4 text-dark mb-2">
+                    <h3 className="font-serif fs-4 text-dark mb-1">
                       {product.name}
                     </h3>
 
-                    <p className="text-muted small mb-3" style={{ minHeight: '44px' }}>
+                    {product.tagline && (
+                      <p className="fst-italic text-gold-dark small mb-2">
+                        {product.tagline}
+                      </p>
+                    )}
+
+                    <p className="text-muted small mb-2" style={{ minHeight: '44px' }}>
                       {product.description}
                     </p>
 
-                    <hr className="my-2 border-gold opacity-25" />
+                    {product.wholesalePrice && product.wholesaleMinQty && (
+                      <div
+                        className="d-flex align-items-center gap-2 text-muted mb-3"
+                        style={{ fontSize: '0.72rem', letterSpacing: '0.01em' }}
+                      >
+                        <i className="bi bi-tags text-gold-dark"></i>
+                        <span>
+                          Precio mayorista desde {product.wholesaleMinQty} u. del mismo producto:{' '}
+                          <strong className="text-gold-dark fw-semibold">
+                            {formatPrice(product.wholesalePrice)} c/u
+                          </strong>
+                        </span>
+                      </div>
+                    )}
+
+                    <hr className="my-2 border-gold" />
 
                     {/* Fragrance Selector */}
                     <div className="my-3">
@@ -199,6 +234,7 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
                         {product.fragrances.map((frag) => (
                           <option key={frag.id} value={frag.id}>
                             {frag.name} {frag.family ? `(${frag.family})` : ''}
+                            {frag.stock === false ? ' — con encargo' : ''}
                           </option>
                         ))}
                       </select>
@@ -206,11 +242,22 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
                       {/* Olfactory Notes Box for the selected fragrance */}
                       {selectedFragrance && (
                         <div className="p-3 bg-gold-soft border border-gold mb-3" style={{ borderRadius: '1px' }}>
-                          <div className="d-flex align-items-center gap-1 mb-1">
-                            <i className="bi bi-droplet-fill text-gold small"></i>
-                            <span className="small fw-bold text-dark">
-                              Familia: {selectedFragrance.family || 'Aromática'}
-                            </span>
+                          <div className="d-flex justify-content-between align-items-center gap-2 mb-1">
+                            <div className="d-flex align-items-center gap-1">
+                              <i className="bi bi-droplet-fill text-gold small"></i>
+                              <span className="small fw-bold text-dark">
+                                Familia: {selectedFragrance.family || 'Aromática'}
+                              </span>
+                            </div>
+                            {selectedFragrance.stock === false ? (
+                              <span className="stock-tag stock-tag-out">
+                                <i className="bi bi-clock-history"></i> Con encargo
+                              </span>
+                            ) : (
+                              <span className="stock-tag stock-tag-in">
+                                <i className="bi bi-check2"></i> Disponible
+                              </span>
+                            )}
                           </div>
                           <p className="small text-muted mb-0 fst-italic" style={{ fontSize: '0.78rem' }}>
                             "{selectedFragrance.notes || 'Notas sutiles y envolventes.'}"
@@ -219,11 +266,47 @@ export default function Catalog({ products, onAddToCart, onOpenAdmin }) {
                       )}
                     </div>
 
+                    {/* Stone Selector (Gema Difusor only) */}
+                    {product.hasStoneSelection && (
+                      <div className="mb-3">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <label className="form-label small fw-bold mb-0 text-dark">
+                            Piedra de la gema:
+                          </label>
+                          <small className="text-muted" style={{ fontSize: '0.72rem' }}>
+                            1 a elección
+                          </small>
+                        </div>
+
+                        <select
+                          className="form-select lux-input"
+                          value={selectedStoneName}
+                          onChange={(e) => handleStoneChange(product.id, e.target.value)}
+                        >
+                          {GEMA_STONES.map((stone) => (
+                            <option key={stone.name} value={stone.name}>
+                              {stone.name}
+                            </option>
+                          ))}
+                        </select>
+
+                        {selectedStone && (
+                          <p
+                            className="text-muted fst-italic mt-2 mb-0"
+                            style={{ fontSize: '0.75rem', lineHeight: '1.4' }}
+                          >
+                            <i className="bi bi-gem text-gold me-1"></i>
+                            {selectedStone.description}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
                     {/* Quantity & Add to Cart button */}
                     <div className="mt-auto pt-2">
                       <div className="row g-2 align-items-center">
                         <div className="col-4">
-                          <div className="input-group border border-secondary border-opacity-25">
+                          <div className="input-group border border-gold">
                             <button
                               className="btn btn-sm btn-outline-secondary border-0 px-2"
                               type="button"

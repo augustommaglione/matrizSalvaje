@@ -1,4 +1,3 @@
-import React from 'react';
 import { BRAND_INFO } from '../data/initialData';
 
 export default function Contact() {
@@ -23,10 +22,10 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="row g-4 justify-content-center">
+        <div className="row justify-content-center">
           
           {/* WhatsApp Card */}
-          <div className="col-12 col-md-5 col-lg-4">
+          <div className="col-12 col-md-7 col-lg-5">
             <div className="lux-card p-4 h-100 text-center d-flex flex-column align-items-center">
               <div 
                 className="d-flex align-items-center justify-content-center mb-3 bg-light border border-gold"
@@ -36,7 +35,7 @@ export default function Contact() {
               </div>
               <h5 className="font-serif text-dark mb-1">WhatsApp Directo</h5>
               <p className="text-muted small mb-3">
-                Atención rápida para consultas, presupuestos y coordinación de envíos.
+                Atención rápida para consultas, encargos, presupuestos y coordinación de envíos.
               </p>
               <span className="fw-bold small text-dark mb-4">
                 {BRAND_INFO.whatsappDisplay}
@@ -53,34 +52,6 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Instagram Card */}
-          <div className="col-12 col-md-5 col-lg-4">
-            <div className="lux-card p-4 h-100 text-center d-flex flex-column align-items-center">
-              <div 
-                className="d-flex align-items-center justify-content-center mb-3 bg-light border border-gold"
-                style={{ width: '60px', height: '60px', borderRadius: '50%' }}
-              >
-                <i className="bi bi-instagram text-danger fs-3"></i>
-              </div>
-              <h5 className="font-serif text-dark mb-1">Instagram Oficial</h5>
-              <p className="text-muted small mb-3">
-                Conoce el proceso artesanal, lanzamientos y consejos para aromatizar tu hogar.
-              </p>
-              <span className="fw-bold small text-dark mb-4">
-                @{BRAND_INFO.instagram}
-              </span>
-              <a
-                href={BRAND_INFO.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-dark-lux w-100 mt-auto py-2 d-flex align-items-center justify-content-center gap-2"
-              >
-                <i className="bi bi-instagram"></i>
-                <span>Seguir en Instagram</span>
-              </a>
-            </div>
-          </div>
-
         </div>
 
         {/* Informative strip */}
@@ -89,12 +60,12 @@ export default function Contact() {
             <i className="bi bi-geo-alt text-gold fs-3"></i>
             <div>
               <h6 className="mb-0 text-dark fw-bold">Taller Artesanal &bull; {BRAND_INFO.location}</h6>
-              <small className="text-muted">Envíos a todo el país y entregas coordinadas</small>
+              <small className="text-muted">Envíos dentro de Córdoba capital, coordinados por WhatsApp</small>
             </div>
           </div>
           <div className="d-flex gap-2">
-            <span className="badge bg-white text-dark border border-secondary border-opacity-25 py-2 px-3">
-              Lunes a Sábado: 9:00 - 19:00 hs
+            <span className="badge bg-white text-dark border border-gold py-2 px-3">
+              Lunes a Sábado: 10:00 - 18:00 hs
             </span>
           </div>
         </div>

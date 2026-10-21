@@ -1,0 +1,60 @@
+# Matiz Silvestre
+
+> Perfumería artesanal de autor en Córdoba, Argentina. Home Sprays textiles, difusores colgantes y gemas difusoras elaborados en pequeños lotes con esencias botánicas y maderas nobles.
+
+Matiz Silvestre es una marca de perfumería artesanal que vende directamente por WhatsApp. Este archivo resume el contenido público del sitio para asistentes de IA.
+
+## Datos de la marca
+
+- Nombre: Matiz Silvestre
+- Rubro: perfumería artesanal y ambientación (home spray, difusores, gemas difusoras)
+- Ubicación: Córdoba, Argentina
+- Atención: lunes a sábado, 9:00 a 19:00 hs
+- Canal de venta y contacto: WhatsApp +54 9 351 331-4890 (https://wa.me/5493513314890)
+- Envíos: únicamente dentro de Córdoba capital; costo y franja horaria se coordinan por WhatsApp
+- Retiro en persona: no disponible
+- Moneda: pesos argentinos (ARS)
+- No se aceptan pedidos por Instagram ni email; la marca no publica esos canales.
+
+## Catálogo
+
+### Home Spray y Textil 200 ml — $10.000
+Bruma artesanal para ambientes y textiles, de evaporación rápida y sin manchar. Precio mayorista: $7.000 por unidad desde 6 unidades del mismo producto (se pueden combinar fragancias).
+Fragancias: Citrus (cítrica), Bambú (herbal limpio), Coniglio (floral blanca), Chicle (dulce-frutal), Jazmín (floral), Naranja & Pimienta (cítrica especiada).
+
+### Difusor Colgante Tradicional 8 ml — $5.000
+Frasco compacto de vidrio con tapa de madera e hilo dorado, para auto o placard. Precio mayorista: $3.450 por unidad desde 10 unidades del mismo producto.
+Fragancias: Citrus, Hawai (fruta tropical), Lavanda (herbal floral), Maderas de Oriente (amaderada oriental), Vainilla & Coco (gourmand oriental), Mango & Maracuyá (fruta tropical), Frutos Rojos (frutos del bosque), Chicle (dulce-frutal).
+
+### Gema Difusor Colgante 10 ml — $5.800
+Difusor facetado inspirado en una piedra preciosa, para auto o armario. Precio mayorista: $3.800 por unidad desde 10 unidades del mismo producto.
+Permite elegir una piedra, que se combina con cualquier fragancia del catálogo:
+- Amatista: transforma las energías negativas en positivas y amorosas.
+- Cuarzo Azul: favorece la comunicación, calma la mente y alivia el miedo.
+- Cuarzo Rosa: piedra de amor incondicional y paz infinita.
+- Jaspe Rojo: ayuda a aterrizar las energías, limpia y estabiliza el aura.
+Fragancias: Citrus, Lavanda, Maderas de Oriente, Vainilla & Coco, Mango & Maracuyá, Frutos Rojos, Chicle.
+
+## Disponibilidad
+
+Cada combinación de producto y fragancia tiene un estado de stock. Las fragancias marcadas como "Con encargo" no están en stock inmediato, pero se pueden pedir igual: la elaboración comienza al confirmar el pedido y el plazo se coordina por WhatsApp. Actualmente todas las fragancias figuran disponibles.
+
+## Cómo comprar
+
+1. Elegir producto, fragancia, cantidad y, en la Gema Difusor, la piedra.
+2. Agregar a la bolsa; el total se calcula aplicando el precio mayorista si corresponde.
+3. Finalizar el pedido por WhatsApp: se abre un mensaje con el detalle (producto, piedra, fragancia, cantidades y total estimado).
+4. Coordinar por WhatsApp disponibilidad, forma de pago y envío dentro de Córdoba capital.
+
+## Secciones del sitio
+
+- Catálogo: /#catalogo
+- Filosofía y cómo encargar: /#filosofia
+- Contacto por WhatsApp: /#contacto
+
+## Notas técnicas
+
+- Sitio estático de una sola página (SPA) hecho con React 19 y Vite 8.
+- Los datos de productos y marca viven en `src/data/initialData.js`.
+- No hay backend, base de datos ni panel de administración; no hay carrito con pago online.
+- El único dato persistente en el navegador es la bolsa de compras (localStorage).

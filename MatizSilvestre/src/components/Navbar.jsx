@@ -1,55 +1,40 @@
-import React from 'react';
-
-export default function Navbar({ cartCount, onOpenCart, onOpenAdmin }) {
+export default function Navbar({ cartCount, onOpenCart }) {
   return (
     <header className="sticky-top bg-white border-bottom border-gold shadow-sm" style={{ zIndex: 1020 }}>
-      <div className="container py-3 d-flex align-items-center justify-content-between">
-        
-        {/* Brand / Logo */}
-        <a href="#" className="text-decoration-none d-flex align-items-center gap-2">
-          <div 
-            className="d-flex align-items-center justify-content-center border border-gold"
-            style={{ width: '38px', height: '38px', borderRadius: '50%' }}
-          >
-            <i className="bi bi-flower1 text-gold fs-5"></i>
-          </div>
-          <div>
-            <span className="font-serif fs-4 text-dark fw-bold tracking-wide d-block leading-1">
-              MATIZ SILVESTRE
-            </span>
-            <small className="text-muted tracking-wider" style={{ fontSize: '0.62rem' }}>
-              PERFUMERÍA DE AUTOR
-            </small>
-          </div>
-        </a>
+      <div className="container py-3">
 
-        {/* Navigation links */}
-        <nav className="d-none d-md-flex align-items-center gap-4">
-          <a href="#catalogo" className="text-dark text-decoration-none tracking-wide fw-medium small hover-gold">
-            Catálogo
+        {/* Top row: brand + cart */}
+        <div className="d-flex align-items-center justify-content-between">
+          <a href="#" className="text-decoration-none d-flex align-items-center gap-2">
+            <div
+              className="d-flex align-items-center justify-content-center border border-gold"
+              style={{ width: '38px', height: '38px', borderRadius: '50%' }}
+            >
+              <i className="bi bi-flower1 text-gold fs-5"></i>
+            </div>
+            <div>
+              <span className="font-serif fs-4 text-dark fw-bold tracking-wide d-block leading-1">
+                MATIZ SILVESTRE
+              </span>
+              <small className="text-muted tracking-wider" style={{ fontSize: '0.62rem' }}>
+                PERFUMERÍA DE AUTOR
+              </small>
+            </div>
           </a>
-          <a href="#filosofia" className="text-dark text-decoration-none tracking-wide fw-medium small hover-gold">
-            Filosofía
-          </a>
-          <a href="#contacto" className="text-dark text-decoration-none tracking-wide fw-medium small hover-gold">
-            Contacto
-          </a>
-        </nav>
 
-        {/* Action Buttons: Admin & Cart */}
-        <div className="d-flex align-items-center gap-2">
-          {/* Admin Button */}
-          <button
-            onClick={onOpenAdmin}
-            className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 border-0"
-            title="Panel Administrador de Fragancias"
-            style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}
-          >
-            <i className="bi bi-shield-lock text-gold"></i>
-            <span className="d-none d-sm-inline text-muted">Admin</span>
-          </button>
+          {/* Desktop navigation */}
+          <nav className="d-none d-md-flex align-items-center gap-4">
+            <a href="#catalogo" className="text-dark text-decoration-none tracking-wide fw-medium small hover-gold">
+              Catálogo
+            </a>
+            <a href="#filosofia" className="text-dark text-decoration-none tracking-wide fw-medium small hover-gold">
+              Filosofía
+            </a>
+            <a href="#contacto" className="text-dark text-decoration-none tracking-wide fw-medium small hover-gold">
+              Contacto
+            </a>
+          </nav>
 
-          {/* Cart Button */}
           <button
             onClick={onOpenCart}
             className="btn btn-outline-gold position-relative d-flex align-items-center gap-2 px-3 py-2"
@@ -64,6 +49,21 @@ export default function Navbar({ cartCount, onOpenCart, onOpenAdmin }) {
               </span>
             )}
           </button>
+        </div>
+
+        {/* Mobile navigation */}
+        <div className="d-md-none border-top border-gold mt-2 pt-2">
+          <nav className="d-flex align-items-center justify-content-around">
+            <a href="#catalogo" className="text-dark text-decoration-none small tracking-wide">
+              Catálogo
+            </a>
+            <a href="#filosofia" className="text-dark text-decoration-none small tracking-wide">
+              Filosofía
+            </a>
+            <a href="#contacto" className="text-dark text-decoration-none small tracking-wide">
+              Contacto
+            </a>
+          </nav>
         </div>
       </div>
     </header>
