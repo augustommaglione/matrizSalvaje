@@ -6,6 +6,6 @@ import { defineConfig } from 'vite'
 // https://<user>.github.io/matrizSalvaje/
 // In development it stays at the root for convenience.
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/matrizSalvaje/' : '/',
+  base:'/',
   plugins: [react()],
 }))
