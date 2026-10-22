@@ -16,19 +16,42 @@ export default function CartDrawer({
     return acc;
   }, {});
 
-  // Bulk unit price applies to every line of the product once the product
-  // total (all fragrances combined) exceeds the threshold.
-  const getUnitPrice = (item) => {
-    const meta = INITIAL_PRODUCTS.find((p) => p.id === item.productId);
+  const getMeta = (item) =>
+    INITIAL_PRODUCTS.find((p) => p.id === item.productId);
+
+  const getDiscountPercent = (item) => {
+    const meta = getMeta(item);
+    return Number(item.discountPercent ?? meta?.discountPercent) || 0;
+  };
+
+  const getRegularPrice = (item) => {
+    const meta = getMeta(item);
+    return Number(item.price ?? meta?.price) || 0;
+  };
+
+  const getOfferPrice = (item) => {
+    const discount = getDiscountPercent(item);
+    return discount > 0
+      ? Math.round(getRegularPrice(item) * (1 - discount / 100))
+      : getRegularPrice(item);
+  };
+
+  // The wholesale rule always uses the product's base price/threshold and
+  // wholesale price, never the promotional price.
+  const isWholesaleApplied = (item) => {
+    const meta = getMeta(item);
     const wholesalePrice = item.wholesalePrice ?? meta?.wholesalePrice;
     const wholesaleMinQty = item.wholesaleMinQty ?? meta?.wholesaleMinQty;
     const productQty = productTotals[item.productId] || item.quantity;
+    return Boolean(wholesalePrice && wholesaleMinQty && productQty >= wholesaleMinQty);
+  };
 
-    return wholesalePrice &&
-      wholesaleMinQty &&
-      productQty >= wholesaleMinQty
-      ? wholesalePrice
-      : item.price;
+  const getUnitPrice = (item) => {
+    if (isWholesaleApplied(item)) {
+      const meta = getMeta(item);
+      return Number(item.wholesalePrice ?? meta?.wholesalePrice) || 0;
+    }
+    return getOfferPrice(item);
   };
 
   const total = items.reduce(
@@ -55,13 +78,23 @@ export default function CartDrawer({
     items.forEach((item, index) => {
       const unitPrice = getUnitPrice(item);
       const itemSubtotal = formatPrice(unitPrice * item.quantity);
-      const bulkApplied = unitPrice !== item.price;
+      const wholesaleApplied = isWholesaleApplied(item);
+      const discountPercent = getDiscountPercent(item);
+      const offerApplied = !wholesaleApplied && discountPercent > 0;
+
       message += `${index + 1}. *${item.quantity}x ${getDisplayName(item)}* (${item.volume})\n`;
       message += `   ↳ Fragancia: _${item.fragrance.name}_\n`;
       if (item.fragrance.stock === false) {
         message += `   ↳ ⚠ *Con encargo* (se prepara a pedido)\n`;
       }
-      message += `   ↳ Precio unitario: ${formatPrice(unitPrice)}${bulkApplied ? ' (precio por cantidad)' : ''}\n`;
+
+      let priceLine = `   ↳ Precio unitario: ${formatPrice(unitPrice)}`;
+      if (wholesaleApplied) {
+        priceLine += ` (precio mayorista)`;
+      } else if (offerApplied) {
+        priceLine += ` (${discountPercent}% OFF, antes ${formatPrice(getRegularPrice(item))})`;
+      }
+      message += `${priceLine}\n`;
       message += `   ↳ Subtotal: ${itemSubtotal}\n\n`;
     });
 
@@ -141,11 +174,23 @@ export default function CartDrawer({
                     )}
                     <span className="fw-bold text-gold-dark small d-block mt-1">
                       {formatPrice(getUnitPrice(item))} c/u
-                      {getUnitPrice(item) !== item.price && (
+                      {isWholesaleApplied(item) ? (
                         <span className="text-muted fw-normal ms-1" style={{ fontSize: '0.68rem' }}>
-                          (precio por cantidad)
+                          (precio mayorista)
                         </span>
-                      )}
+                      ) : getDiscountPercent(item) > 0 ? (
+                        <>
+                          <span className="text-gold-dark fw-semibold ms-1" style={{ fontSize: '0.68rem' }}>
+                            {getDiscountPercent(item)}% OFF
+                          </span>
+                          <span
+                            className="text-muted text-decoration-line-through fw-normal ms-1"
+                            style={{ fontSize: '0.68rem' }}
+                          >
+                            {formatPrice(getRegularPrice(item))}
+                          </span>
+                        </>
+                      ) : null}
                     </span>
 
                     {/* Quantity controls */}

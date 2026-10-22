@@ -82,10 +82,10 @@ export default function Hero() {
 
                 <div className="pt-3 text-center">
                   <span className="badge-outline-gold d-inline-block mb-1">
-                    Nueva Edición 
+                    Ofertas Inaguración 
                   </span>
                   <p className="font-serif fs-5 mb-0 text-dark">
-                    Fragancia Bambú
+                    Todas los productos con <strong>15% de descuento</strong>.
                   </p>
                   <small className="text-muted" style={{ fontSize: '0.75rem' }}>
                     Home Sprays 200ml &bull; Difusores 8ml &bull; Gema Difusores 10ml

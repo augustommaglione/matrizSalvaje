@@ -72,6 +72,7 @@ export default function Catalog({ products, onAddToCart }) {
       stone: selectedStone,
       volume: product.volume,
       price: product.price,
+      discountPercent: Number(product.discountPercent) || 0,
       wholesalePrice: product.wholesalePrice,
       wholesaleMinQty: product.wholesaleMinQty,
       image: product.image,
@@ -154,17 +155,28 @@ export default function Catalog({ products, onAddToCart }) {
               ? GEMA_STONES.find((s) => s.name === selectedStoneName) || GEMA_STONES[0]
               : null;
 
+            const discountPercent = Number(product.discountPercent) || 0;
+            const hasDiscount = discountPercent > 0;
+            const finalPrice = hasDiscount
+              ? Math.round(product.price * (1 - discountPercent / 100))
+              : product.price;
+
             return (
               <div key={product.id} className="col-12 col-md-6 col-lg-4">
                 <div className="lux-card h-100 d-flex flex-column">
                   
-                  {/* Image container with volume indicator */}
+                  {/* Image container with offer badge and volume indicator */}
                   <div className="product-img-wrapper">
                     <img
                       src={product.image}
                       alt={product.name}
                       loading="lazy"
                     />
+                    {hasDiscount && (
+                      <div className="position-absolute top-0 start-0 m-3">
+                        <span className="badge-offer">{discountPercent}% OFF</span>
+                      </div>
+                    )}
                     <div className="position-absolute top-0 end-0 m-3">
                       <span className="badge bg-dark text-white rounded-0 px-2 py-1 small">
                         {product.volume}
@@ -179,9 +191,19 @@ export default function Catalog({ products, onAddToCart }) {
                       <small className="text-muted text-uppercase tracking-wider" style={{ fontSize: '0.65rem' }}>
                         {product.category}
                       </small>
-                      <h4 className="font-serif text-gold-dark mb-0 fw-bold">
-                        {formatPrice(product.price)}
-                      </h4>
+                      <div className="text-end">
+                        {hasDiscount && (
+                          <small
+                            className="text-muted text-decoration-line-through d-block"
+                            style={{ fontSize: '0.78rem', lineHeight: '1.2' }}
+                          >
+                            {formatPrice(product.price)}
+                          </small>
+                        )}
+                        <h4 className="font-serif text-gold-dark mb-0 fw-bold">
+                          {formatPrice(finalPrice)}
+                        </h4>
+                      </div>
                     </div>
 
                     <h3 className="font-serif fs-4 text-dark mb-1">
