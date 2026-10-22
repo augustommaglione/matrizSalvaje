@@ -17,7 +17,7 @@ export default function Navbar({ cartCount, onOpenCart }) {
                 MATIZ SILVESTRE
               </span>
               <small className="text-muted tracking-wider" style={{ fontSize: '0.62rem' }}>
-                PERFUMERÍA DE AUTOR
+                PERFUMERÍA ARTESANAL
               </small>
             </div>
           </a>

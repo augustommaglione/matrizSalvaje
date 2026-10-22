@@ -1,3 +1,4 @@
+import fotoHs200ml from '../assets/images/Hs_200mlHeader.jpg';
 export default function Hero() {
   return (
     <section className="hero-wrapper py-5">
@@ -8,7 +9,7 @@ export default function Hero() {
           <div className="col-lg-7 text-center text-lg-start">
             <div className="hero-badge mb-3">
               <i className="bi bi-stars"></i>
-              <span>???</span>
+              <span>Artesanal</span>
             </div>
 
             <h1 className="display-4 fw-light mb-3 text-dark">
@@ -73,7 +74,7 @@ export default function Hero() {
               >
                 <div className="product-img-wrapper" style={{ height: '420px' }}>
                   <img
-                    src="https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?q=80&w=900&auto=format&fit=crop"
+                    src={fotoHs200ml}
                     alt="Frascos de perfume artesanal Matiz Silvestre"
                     className="w-100 h-100 object-fit-cover"
                   />

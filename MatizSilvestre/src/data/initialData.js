@@ -1,3 +1,7 @@
+import fotoHs200ml from '../assets/images/Hs_200ml.jpg';
+import fotoDifusorColgante from '../assets/images/Dc_8ml.jpg';
+import fotoGemaDifusor from '../assets/images/Gd_10ml.jpg';
+
 export const INITIAL_PRODUCTS = [
   {
     id: 'home-spray-200ml',
@@ -11,7 +15,7 @@ export const INITIAL_PRODUCTS = [
     description:
       'Formulación botánica artesanal diseñada para vestir el aire y tus textiles más preciados con una bruma sutil y persistente sin manchar.',
     image:
-      'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?q=80&w=800&auto=format&fit=crop',
+      fotoHs200ml,
     fragrances: [
       {
         id: 'f-hs-1',
@@ -69,7 +73,7 @@ export const INITIAL_PRODUCTS = [
     description:
       'Frasco compacto de vidrio templado con tapa de madera y un hilo dorado que absorbe y difunde la fragancia de forma continua y gradual.',
     image:
-      'https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?q=80&w=800&auto=format&fit=crop',
+      fotoDifusorColgante,
     fragrances: [
       {
         id: 'f-dc-1',
@@ -142,7 +146,7 @@ export const INITIAL_PRODUCTS = [
     description:
       'Inspirada en el corte de una piedra preciosa. Su diseño facetado refracta la luz mientras aromatiza con distinción tu vehículo o armario personal.',
     image:
-      'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=800&auto=format&fit=crop',
+      fotoGemaDifusor,
     fragrances: [
       {
         id: 'f-gd-1',
