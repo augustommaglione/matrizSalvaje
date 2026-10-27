@@ -6,6 +6,7 @@ import Catalog from './components/Catalog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
+import PolicyModal from './components/PolicyModal';
 import { INITIAL_PRODUCTS, BRAND_INFO } from './data/initialData';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isPolicyOpen, setIsPolicyOpen] = useState(false);
 
   // Sync cart to localStorage
   useEffect(() => {
@@ -101,7 +103,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenPolicy={() => setIsPolicyOpen(true)} />
 
       {/* Floating Action Buttons */}
       <div className="floating-actions">
@@ -142,6 +144,12 @@ function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
         onClearCart={handleClearCart}
+      />
+
+      {/* Purchase conditions modal */}
+      <PolicyModal
+        isOpen={isPolicyOpen}
+        onClose={() => setIsPolicyOpen(false)}
       />
 
     </div>

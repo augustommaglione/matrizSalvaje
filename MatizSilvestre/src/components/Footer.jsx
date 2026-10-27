@@ -1,6 +1,6 @@
 import { BRAND_INFO } from '../data/initialData';
 
-export default function Footer() {
+export default function Footer({ onOpenPolicy }) {
   return (
     <footer className="bg-dark text-white pt-5 pb-4 border-top border-gold">
       <div className="container">
@@ -35,6 +35,17 @@ export default function Footer() {
               <li><a href="#catalogo" className="text-secondary text-decoration-none hover-white">Catálogo de Productos</a></li>
               <li><a href="#filosofia" className="text-secondary text-decoration-none hover-white">Filosofía</a></li>
               <li><a href="#contacto" className="text-secondary text-decoration-none hover-white">Contacto Directo</a></li>
+              <li>
+                <button
+                  type="button"
+                  onClick={onOpenPolicy}
+                  className="btn btn-link p-0 text-start text-secondary text-decoration-none hover-white border-0 align-baseline"
+                  style={{ fontSize: 'inherit' }}
+                  aria-haspopup="dialog"
+                >
+                  Condiciones de Compra y Envíos
+                </button>
+              </li>
             </ul>
           </div>
 
