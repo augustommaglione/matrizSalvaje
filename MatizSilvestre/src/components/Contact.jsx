@@ -31,7 +31,7 @@ export default function Contact() {
                 className="d-flex align-items-center justify-content-center mb-3 bg-light border border-gold"
                 style={{ width: '60px', height: '60px', borderRadius: '50%' }}
               >
-                <i className="bi bi-whatsapp text-success fs-3"></i>
+                <i aria-hidden="true" className="bi bi-whatsapp text-success fs-3"></i>
               </div>
               <h5 className="font-serif text-dark mb-1">WhatsApp Directo</h5>
               <p className="text-muted small mb-3">
@@ -46,7 +46,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="btn btn-gold w-100 mt-auto py-2 d-flex align-items-center justify-content-center gap-2"
               >
-                <i className="bi bi-whatsapp"></i>
+                <i aria-hidden="true" className="bi bi-whatsapp"></i>
                 <span>Escribir por WhatsApp</span>
               </a>
             </div>
@@ -57,7 +57,7 @@ export default function Contact() {
         {/* Informative strip */}
         <div className="mt-5 p-4 bg-light border border-gold d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
           <div className="d-flex align-items-center gap-3">
-            <i className="bi bi-geo-alt text-gold fs-3"></i>
+            <i aria-hidden="true" className="bi bi-geo-alt text-gold fs-3"></i>
             <div>
               <h6 className="mb-0 text-dark fw-bold">Taller Artesanal &bull; {BRAND_INFO.location}</h6>
               <small className="text-muted">Envíos dentro de Córdoba capital, coordinados por WhatsApp</small>

@@ -10,7 +10,7 @@ export default function Navbar({ cartCount, onOpenCart }) {
               className="d-flex align-items-center justify-content-center border border-gold"
               style={{ width: '38px', height: '38px', borderRadius: '50%' }}
             >
-              <i className="bi bi-flower1 text-gold fs-5"></i>
+              <i aria-hidden="true" className="bi bi-flower1 text-gold fs-5"></i>
             </div>
             <div>
               <span className="font-serif fs-4 text-dark fw-bold tracking-wide d-block leading-1">
@@ -41,7 +41,7 @@ export default function Navbar({ cartCount, onOpenCart }) {
             style={{ borderRadius: '0px' }}
             aria-label="Abrir Carrito de Compras"
           >
-            <i className="bi bi-bag"></i>
+            <i aria-hidden="true" className="bi bi-bag"></i>
             <span className="d-none d-sm-inline" style={{ fontSize: '0.75rem' }}>Bolsa</span>
             {cartCount > 0 && (
               <span className="badge bg-gold text-white rounded-pill px-2 py-1" style={{ fontSize: '0.7rem' }}>

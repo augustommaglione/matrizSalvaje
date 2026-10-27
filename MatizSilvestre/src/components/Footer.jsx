@@ -8,7 +8,7 @@ export default function Footer() {
           
           <div className="col-12 col-md-5">
             <div className="d-flex align-items-center gap-2 mb-2">
-              <i className="bi bi-flower1 text-gold fs-4"></i>
+              <i aria-hidden="true" className="bi bi-flower1 text-gold fs-4"></i>
               <h5 className="font-serif tracking-wider mb-0 text-white">
                 MATIZ SILVESTRE
               </h5>
@@ -24,7 +24,7 @@ export default function Footer() {
                 className="text-secondary hover-gold"
                 aria-label="WhatsApp"
               >
-                <i className="bi bi-whatsapp fs-5"></i>
+                <i aria-hidden="true" className="bi bi-whatsapp fs-5"></i>
               </a>
             </div>
           </div>

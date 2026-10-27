@@ -13,10 +13,14 @@ export const INITIAL_PRODUCTS = [
     wholesalePrice: 7000,
     wholesaleMinQty: 6,
     category: 'Ambientación & Textil',
+    hasColorSelection: true,
+    colorOptions: ['Gatillo Dorado', 'Gatillo Plateado'],
     description:
       'Formulación botánica artesanal diseñada para vestir el aire y tus textiles más preciados con una bruma sutil y persistente sin manchar.',
     image:
       fotoHs200ml,
+    imageAlt:
+      'Home Spray y Textil Matiz Silvestre de 200 ml con gatillo dorado',
     fragrances: [
       {
         id: 'f-hs-1',
@@ -76,6 +80,8 @@ export const INITIAL_PRODUCTS = [
       'Frasco compacto de vidrio templado con tapa de madera y un hilo dorado que absorbe y difunde la fragancia de forma continua y gradual.',
     image:
       fotoDifusorColgante,
+    imageAlt:
+      'Difusor colgante tradicional Matiz Silvestre de 8 ml con tapa de madera e hilo dorado',
     fragrances: [
       {
         id: 'f-dc-1',
@@ -150,6 +156,8 @@ export const INITIAL_PRODUCTS = [
       'Inspirada en el corte de una piedra preciosa. Su diseño facetado refracta la luz mientras aromatiza con distinción tu vehículo o armario personal.',
     image:
       fotoGemaDifusor,
+    imageAlt:
+      'Gema difusor colgante Matiz Silvestre de 10 ml con diseño facetado',
     fragrances: [
       {
         id: 'f-gd-1',

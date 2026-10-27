@@ -86,7 +86,7 @@ export default function Philosophy() {
                   className="mx-auto mb-3 d-flex align-items-center justify-content-center bg-white border border-gold"
                   style={{ width: '56px', height: '56px', borderRadius: '50%' }}
                 >
-                  <i className={`bi ${item.icon} text-gold fs-4`}></i>
+                  <i aria-hidden="true" className={`bi ${item.icon} text-gold fs-4`}></i>
                 </div>
                 <h5 className="font-serif text-dark mb-2">{item.title}</h5>
                 <p className="text-muted small mb-0">{item.desc}</p>
@@ -123,7 +123,7 @@ export default function Philosophy() {
                   </div>
                   <div>
                     <h5 className="font-serif text-dark mb-1 d-flex align-items-center gap-2">
-                      <i className={`bi ${item.icon} text-gold`}></i>
+                      <i aria-hidden="true" className={`bi ${item.icon} text-gold`}></i>
                       {item.title}
                     </h5>
                     <p className="text-muted small mb-0">{item.desc}</p>
@@ -138,7 +138,7 @@ export default function Philosophy() {
                           <ul className="list-unstyled mb-0 d-flex flex-column gap-2">
                             {GEMA_STONES.map((stone) => (
                               <li key={stone.name} className="d-flex gap-2">
-                                <i className="bi bi-gem text-gold mt-1" style={{ fontSize: '0.7rem' }}></i>
+                                <i aria-hidden="true" className="bi bi-gem text-gold mt-1" style={{ fontSize: '0.7rem' }}></i>
                                 <span className="small" style={{ fontSize: '0.75rem', lineHeight: '1.45' }}>
                                   <strong className="text-dark">{stone.name}:</strong>{' '}
                                   <span className="text-muted">{stone.description}</span>
@@ -162,7 +162,7 @@ export default function Philosophy() {
                         rel="noopener noreferrer"
                         className="btn btn-outline-gold btn-sm mt-3 py-1 px-3"
                       >
-                        <i className="bi bi-whatsapp me-1"></i> Coordinar por WhatsApp
+                        <i aria-hidden="true" className="bi bi-whatsapp me-1"></i> Coordinar por WhatsApp
                       </a>
                     )}
                   </div>

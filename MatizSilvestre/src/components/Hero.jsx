@@ -8,7 +8,7 @@ export default function Hero() {
           {/* Left Column: Brand Story & CTA */}
           <div className="col-lg-7 text-center text-lg-start">
             <div className="hero-badge mb-3">
-              <i className="bi bi-stars"></i>
+              <i aria-hidden="true" className="bi bi-stars"></i>
               <span>Artesanal</span>
             </div>
 
@@ -34,7 +34,7 @@ export default function Hero() {
             <div className="row g-3 pt-3 border-top border-gold text-start">
               <div className="col-4">
                 {/*<div className="d-flex align-items-center gap-2">
-                  <i className="bi bi-droplet-half text-gold fs-5"></i>
+                  <i aria-hidden="true" className="bi bi-droplet-half text-gold fs-5"></i>
                   <div>
                     <h6 className="mb-0 small fw-bold">Maceración</h6>
                     <small className="text-muted" style={{ fontSize: '0.7rem' }}>Artesanal</small>
@@ -44,7 +44,7 @@ export default function Hero() {
 
               <div className="col-4">
                 {/*<div className="d-flex align-items-center gap-2">
-                  <i className="bi bi-feather text-gold fs-5"></i>
+                  <i aria-hidden="true" className="bi bi-feather text-gold fs-5"></i>
                   <div>
                     <h6 className="mb-0 small fw-bold">Textiles</h6>
                     <small className="text-muted" style={{ fontSize: '0.7rem' }}>No mancha</small>
@@ -54,7 +54,7 @@ export default function Hero() {
 
               <div className="col-4">
                 {/*<div className="d-flex align-items-center gap-2">
-                  <i className="bi bi-gem text-gold fs-5"></i>
+                  <i aria-hidden="true" className="bi bi-gem text-gold fs-5"></i>
                   <div>
                     <h6 className="mb-0 small fw-bold">Diseño Único</h6>
                     <small className="text-muted" style={{ fontSize: '0.7rem' }}>Facetado & noble</small>
@@ -75,7 +75,7 @@ export default function Hero() {
                 <div className="product-img-wrapper" style={{ height: '420px' }}>
                   <img
                     src={fotoHs200ml}
-                    alt="Frascos de perfume artesanal Matiz Silvestre"
+                    alt="Home Spray y Textil Matiz Silvestre de 200 ml con gatillo dorado sobre una mesa"
                     className="w-100 h-100 object-fit-cover"
                   />
                 </div>

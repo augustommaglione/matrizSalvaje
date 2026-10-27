@@ -59,8 +59,11 @@ export default function CartDrawer({
     0
   );
 
-  const getDisplayName = (item) =>
-    item.stone ? `${item.productName} ${item.stone}` : item.productName;
+  const getDisplayName = (item) => {
+    if (item.stone) return `${item.productName} ${item.stone}`;
+    if (item.color) return `${item.productName} (${item.color})`;
+    return item.productName;
+  };
 
   const formatPrice = (val) => {
     return new Intl.NumberFormat('es-AR', {
@@ -121,7 +124,7 @@ export default function CartDrawer({
         {/* Drawer Header */}
         <div className="d-flex justify-content-between align-items-center pb-3 border-bottom border-gold">
           <div className="d-flex align-items-center gap-2">
-            <i className="bi bi-bag text-gold fs-4"></i>
+            <i aria-hidden="true" className="bi bi-bag text-gold fs-4"></i>
             <h5 className="font-serif mb-0 text-dark">Bolsa de Compras</h5>
           </div>
           <button
@@ -136,7 +139,7 @@ export default function CartDrawer({
         <div className="flex-grow-1 overflow-auto my-3 pe-1">
           {items.length === 0 ? (
             <div className="text-center py-5 text-muted">
-              <i className="bi bi-bag-x text-gold display-4 d-block mb-3"></i>
+              <i aria-hidden="true" className="bi bi-bag-x text-gold display-4 d-block mb-3"></i>
               <p className="font-serif fs-5 mb-1 text-dark">Tu bolsa está vacía</p>
               <p className="small">Descubre nuestras fragancias exclusivas y añádelas aquí.</p>
               <button 
@@ -151,12 +154,12 @@ export default function CartDrawer({
             <div className="d-flex flex-column gap-3">
               {items.map((item, idx) => (
                 <div 
-                  key={`${item.productId}-${item.fragrance.id}-${idx}`}
+                  key={`${item.productId}-${item.stone || ''}-${item.color || ''}-${item.fragrance.id}-${idx}`}
                   className="p-3 bg-light border border-gold d-flex gap-3 position-relative"
                 >
                   <img
                     src={item.image}
-                    alt={item.productName}
+                    alt={`${getDisplayName(item)}, ${item.volume}, fragancia ${item.fragrance.name}`}
                     style={{ width: '65px', height: '65px', objectFit: 'cover' }}
                   />
 
@@ -169,7 +172,7 @@ export default function CartDrawer({
                     </small>
                     {item.fragrance.stock === false && (
                       <span className="stock-tag stock-tag-out mt-1">
-                        <i className="bi bi-clock-history"></i> Con encargo
+                        <i aria-hidden="true" className="bi bi-clock-history"></i> Con encargo
                       </span>
                     )}
                     <span className="fw-bold text-gold-dark small d-block mt-1">
@@ -228,7 +231,7 @@ export default function CartDrawer({
                     onClick={() => onRemoveItem(idx)}
                     title="Eliminar producto"
                   >
-                    <i className="bi bi-x fs-5"></i>
+                    <i aria-hidden="true" className="bi bi-x fs-5"></i>
                   </button>
                 </div>
               ))}
@@ -251,7 +254,7 @@ export default function CartDrawer({
               onClick={handleCheckoutWhatsApp}
               className="btn btn-gold w-100 py-3 d-flex align-items-center justify-content-center gap-2 mb-2"
             >
-              <i className="bi bi-whatsapp fs-5"></i>
+              <i aria-hidden="true" className="bi bi-whatsapp fs-5"></i>
               <span>Finalizar Pedido por WhatsApp</span>
             </button>
 

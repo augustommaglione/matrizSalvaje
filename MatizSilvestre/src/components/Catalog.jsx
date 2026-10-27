@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { GEMA_STONES } from '../data/initialData';
+import {trackAddToCart} from '../utils/analytics';
 
 export default function Catalog({ products, onAddToCart }) {
   // Store selected fragrance, stone and quantity per product ID
@@ -9,6 +10,7 @@ export default function Catalog({ products, onAddToCart }) {
       initial[prod.id] = {
         fragranceId: prod.fragrances[0]?.id || '',
         stoneName: prod.hasStoneSelection ? GEMA_STONES[0]?.name || '' : '',
+        colorName: prod.hasColorSelection ? prod.colorOptions?.[0] || '' : '',
         quantity: 1
       };
     });
@@ -37,6 +39,16 @@ export default function Catalog({ products, onAddToCart }) {
     }));
   };
 
+  const handleColorChange = (productId, colorName) => {
+    setSelections((prev) => ({
+      ...prev,
+      [productId]: {
+        ...prev[productId],
+        colorName
+      }
+    }));
+  };
+
   const handleQuantityChange = (productId, delta) => {
     setSelections((prev) => {
       const currentQty = prev[productId]?.quantity || 1;
@@ -55,6 +67,7 @@ export default function Catalog({ products, onAddToCart }) {
     const currentSel = selections[product.id] || {
       fragranceId: product.fragrances[0]?.id,
       stoneName: product.hasStoneSelection ? GEMA_STONES[0]?.name || '' : '',
+      colorName: product.hasColorSelection ? product.colorOptions?.[0] || '' : '',
       quantity: 1
     };
 
@@ -66,10 +79,15 @@ export default function Catalog({ products, onAddToCart }) {
       ? currentSel.stoneName || GEMA_STONES[0]?.name || ''
       : '';
 
+    const selectedColor = product.hasColorSelection
+      ? currentSel.colorName || product.colorOptions?.[0] || ''
+      : '';
+
     onAddToCart({
       productId: product.id,
       productName: product.name,
       stone: selectedStone,
+      color: selectedColor,
       volume: product.volume,
       price: product.price,
       discountPercent: Number(product.discountPercent) || 0,
@@ -80,13 +98,28 @@ export default function Catalog({ products, onAddToCart }) {
       quantity: currentSel.quantity || 1
     });
 
-    const displayName = selectedStone
-      ? `${product.name} ${selectedStone}`
-      : product.name;
+    let displayName = product.name;
+    if (selectedColor) displayName += ` (${selectedColor})`;
+    if (selectedStone) displayName += ` ${selectedStone}`;
     setToastMessage(`Añadiste "${displayName} (${selectedFragrance.name})" a tu bolsa.`);
     setTimeout(() => {
       setToastMessage(null);
     }, 3500);
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'add_to_cart', {
+        currency: 'ARS',
+        value: (Number(product.price) || 0)* (currentSel.quantity || 1),
+        items: [
+          {
+            item_id: String(product.id),
+            item_name: product.name,
+            item_variant: [selectedFragrance?.name, selectedStone, selectedColor].filter(Boolean).join(' - '),
+            price: Number(product.price) || 0,
+            quantity: currentSel.quantity || 1
+          }
+        ]
+      });
+    }
   };
 
   // Helper format currency
@@ -107,7 +140,7 @@ export default function Catalog({ products, onAddToCart }) {
           className="position-fixed top-0 start-50 translate-middle-x mt-4 shadow-lg border border-gold bg-white p-3 d-flex align-items-center gap-3"
           style={{ zIndex: 1060, maxWidth: '90%' }}
         >
-          <i className="bi bi-bag-check-fill text-gold fs-4"></i>
+          <i aria-hidden="true" className="bi bi-bag-check-fill text-gold fs-4"></i>
           <div>
             <strong className="d-block small text-dark">¡Producto Agregado!</strong>
             <span className="small text-muted">{toastMessage}</span>
@@ -155,6 +188,8 @@ export default function Catalog({ products, onAddToCart }) {
               ? GEMA_STONES.find((s) => s.name === selectedStoneName) || GEMA_STONES[0]
               : null;
 
+            const selectedColorName = productSelection.colorName || product.colorOptions?.[0] || '';
+
             const discountPercent = Number(product.discountPercent) || 0;
             const hasDiscount = discountPercent > 0;
             const finalPrice = hasDiscount
@@ -169,7 +204,7 @@ export default function Catalog({ products, onAddToCart }) {
                   <div className="product-img-wrapper">
                     <img
                       src={product.image}
-                      alt={product.name}
+                      alt={product.imageAlt || product.name}
                       loading="lazy"
                     />
                     {hasDiscount && (
@@ -225,7 +260,7 @@ export default function Catalog({ products, onAddToCart }) {
                         className="d-flex align-items-center gap-2 text-muted mb-3"
                         style={{ fontSize: '0.72rem', letterSpacing: '0.01em' }}
                       >
-                        <i className="bi bi-tags text-gold-dark"></i>
+                        <i aria-hidden="true" className="bi bi-tags text-gold-dark"></i>
                         <span>
                           Precio mayorista desde {product.wholesaleMinQty} u. del mismo producto:{' '}
                           <strong className="text-gold-dark fw-semibold">
@@ -266,18 +301,18 @@ export default function Catalog({ products, onAddToCart }) {
                         <div className="p-3 bg-gold-soft border border-gold mb-3" style={{ borderRadius: '1px' }}>
                           <div className="d-flex justify-content-between align-items-center gap-2 mb-1">
                             <div className="d-flex align-items-center gap-1">
-                              <i className="bi bi-droplet-fill text-gold small"></i>
+                              <i aria-hidden="true" className="bi bi-droplet-fill text-gold small"></i>
                               <span className="small fw-bold text-dark">
                                 Familia: {selectedFragrance.family || 'Aromática'}
                               </span>
                             </div>
                             {selectedFragrance.stock === false ? (
                               <span className="stock-tag stock-tag-out">
-                                <i className="bi bi-clock-history"></i> Con encargo
+                                <i aria-hidden="true" className="bi bi-clock-history"></i> Con encargo
                               </span>
                             ) : (
                               <span className="stock-tag stock-tag-in">
-                                <i className="bi bi-check2"></i> Disponible
+                                <i aria-hidden="true" className="bi bi-check2"></i> Disponible
                               </span>
                             )}
                           </div>
@@ -287,6 +322,32 @@ export default function Catalog({ products, onAddToCart }) {
                         </div>
                       )}
                     </div>
+
+                    {/* Color Selector (Home Spray only) */}
+                    {product.hasColorSelection && (
+                      <div className="mb-3">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <label className="form-label small fw-bold mb-0 text-dark">
+                            Color del gatillo:
+                          </label>
+                          <small className="text-muted" style={{ fontSize: '0.72rem' }}>
+                            {product.colorOptions?.length || 0} opciones
+                          </small>
+                        </div>
+
+                        <select
+                          className="form-select lux-input"
+                          value={selectedColorName}
+                          onChange={(e) => handleColorChange(product.id, e.target.value)}
+                        >
+                          {(product.colorOptions || []).map((color) => (
+                            <option key={color} value={color}>
+                              {color}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
 
                     {/* Stone Selector (Gema Difusor only) */}
                     {product.hasStoneSelection && (
@@ -317,7 +378,7 @@ export default function Catalog({ products, onAddToCart }) {
                             className="text-muted fst-italic mt-2 mb-0"
                             style={{ fontSize: '0.75rem', lineHeight: '1.4' }}
                           >
-                            <i className="bi bi-gem text-gold me-1"></i>
+                            <i aria-hidden="true" className="bi bi-gem text-gold me-1"></i>
                             {selectedStone.description}
                           </p>
                         )}
@@ -358,7 +419,7 @@ export default function Catalog({ products, onAddToCart }) {
                             onClick={() => handleAdd(product)}
                             className="btn btn-gold w-100 py-2 d-flex align-items-center justify-content-center gap-2"
                           >
-                            <i className="bi bi-bag-plus"></i>
+                            <i aria-hidden="true" className="bi bi-bag-plus"></i>
                             <span>Agregar</span>
                           </button>
                         </div>

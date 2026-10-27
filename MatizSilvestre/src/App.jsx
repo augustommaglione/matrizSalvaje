@@ -44,6 +44,7 @@ function App() {
         (i) =>
           i.productId === newItem.productId &&
           i.stone === newItem.stone &&
+          i.color === newItem.color &&
           i.fragrance.id === newItem.fragrance.id
       );
 
@@ -110,6 +111,7 @@ function App() {
           className="floating-btn btn-floating-cart"
           onClick={() => setIsCartOpen(true)}
           title="Ver bolsa de compras"
+          aria-label="Ver bolsa de compras"
         >
           <i className="bi bi-bag"></i>
           {cartItemCount > 0 && (
@@ -126,6 +128,7 @@ function App() {
           rel="noopener noreferrer"
           className="floating-btn btn-floating-wa"
           title="Consultar por WhatsApp"
+          aria-label="Consultar por WhatsApp"
         >
           <i className="bi bi-whatsapp"></i>
         </a>
