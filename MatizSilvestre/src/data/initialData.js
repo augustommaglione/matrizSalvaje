@@ -14,7 +14,7 @@ export const INITIAL_PRODUCTS = [
     wholesaleMinQty: 6,
     category: 'Ambientación & Textil',
     hasColorSelection: true,
-    colorOptions: ['Gatillo Dorado', 'Gatillo Plateado'],
+    colorOptions: ['Gatillo Dorado', 'Gatillo Plateado','Gatillo Rosa','Gatillo Dorado con lineas'],
     description:
       'Formulación botánica artesanal diseñada para vestir el aire y tus textiles más preciados con una bruma sutil y persistente sin manchar.',
     image:
