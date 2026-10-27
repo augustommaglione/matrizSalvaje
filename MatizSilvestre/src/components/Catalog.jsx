@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { GEMA_STONES } from '../data/initialData';
-import {trackAddToCart} from '../utils/analytics';
 
 export default function Catalog({ products, onAddToCart }) {
   // Store selected fragrance, stone and quantity per product ID
@@ -105,16 +104,16 @@ export default function Catalog({ products, onAddToCart }) {
     setTimeout(() => {
       setToastMessage(null);
     }, 3500);
-    if (typeof window.gtag === 'function') {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
       window.gtag('event', 'add_to_cart', {
         currency: 'ARS',
-        value: (Number(product.price) || 0)* (currentSel.quantity || 1),
+        value: (Number(product.price) || 0) * (currentSel.quantity || 1),
         items: [
           {
             item_id: String(product.id),
             item_name: product.name,
             item_variant: [selectedFragrance?.name, selectedStone, selectedColor].filter(Boolean).join(' - '),
-            price: Number(product.price) || 0,
+            price: product.price,
             quantity: currentSel.quantity || 1
           }
         ]
