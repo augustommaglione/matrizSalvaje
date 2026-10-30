@@ -19,6 +19,11 @@ export const INITIAL_PRODUCTS = [
       'Formulación botánica artesanal diseñada para vestir el aire y tus textiles más preciados con una bruma sutil y persistente sin manchar.',
     image:
       fotoHs200ml,
+    images: [
+      fotoHs200ml,
+      fotoGemaDifusor,
+      fotoDifusorColgante
+    ],
     imageAlt:
       'Home Spray y Textil Matiz Silvestre de 200 ml con gatillo dorado',
     fragrances: [

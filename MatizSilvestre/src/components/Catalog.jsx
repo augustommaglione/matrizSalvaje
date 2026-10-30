@@ -1,5 +1,62 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GEMA_STONES } from '../data/initialData';
+
+function ProductImageCarousel({ images, defaultImage, alt, interval = 3000 }) {
+  const imageList = Array.isArray(images) && images.length > 0 ? images : [defaultImage];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (imageList.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % imageList.length);
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [imageList.length, interval, currentIndex]);
+
+  if (imageList.length <= 1) {
+    return (
+      <img
+        src={imageList[0]}
+        alt={alt}
+        loading="lazy"
+      />
+    );
+  }
+
+  return (
+    <div className="position-relative w-100 h-100">
+      {imageList.map((src, idx) => (
+        <img
+          key={src}
+          src={src}
+          alt={`${alt} - ${idx + 1}`}
+          loading={idx === 0 ? 'eager' : 'lazy'}
+          className={`product-carousel-item ${idx === currentIndex ? 'active' : ''}`}
+        />
+      ))}
+      <div
+        className="position-absolute bottom-0 start-50 translate-middle-x mb-2 d-flex gap-1"
+        style={{ zIndex: 3 }}
+      >
+        {imageList.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className={`carousel-dot ${idx === currentIndex ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setCurrentIndex(idx);
+            }}
+            aria-label={`Ir a la imagen ${idx + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Catalog({ products, onAddToCart }) {
   // Store selected fragrance, stone and quantity per product ID
@@ -201,17 +258,18 @@ export default function Catalog({ products, onAddToCart }) {
                   
                   {/* Image container with offer badge and volume indicator */}
                   <div className="product-img-wrapper">
-                    <img
-                      src={product.image}
+                    <ProductImageCarousel
+                      images={product.images}
+                      defaultImage={product.image}
                       alt={product.imageAlt || product.name}
-                      loading="lazy"
+                      interval={3000}
                     />
                     {hasDiscount && (
-                      <div className="position-absolute top-0 start-0 m-3">
+                      <div className="position-absolute top-0 start-0 m-3" style={{ zIndex: 4 }}>
                         <span className="badge-offer">{discountPercent}% OFF</span>
                       </div>
                     )}
-                    <div className="position-absolute top-0 end-0 m-3">
+                    <div className="position-absolute top-0 end-0 m-3" style={{ zIndex: 4 }}>
                       <span className="badge bg-dark text-white rounded-0 px-2 py-1 small">
                         {product.volume}
                       </span>

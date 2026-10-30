@@ -30,39 +30,6 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Quick Badges */}
-            <div className="row g-3 pt-3 border-top border-gold text-start">
-              <div className="col-4">
-                {/*<div className="d-flex align-items-center gap-2">
-                  <i aria-hidden="true" className="bi bi-droplet-half text-gold fs-5"></i>
-                  <div>
-                    <h6 className="mb-0 small fw-bold">Maceración</h6>
-                    <small className="text-muted" style={{ fontSize: '0.7rem' }}>Artesanal</small>
-                  </div>
-                </div>*/}
-              </div>
-
-              <div className="col-4">
-                {/*<div className="d-flex align-items-center gap-2">
-                  <i aria-hidden="true" className="bi bi-feather text-gold fs-5"></i>
-                  <div>
-                    <h6 className="mb-0 small fw-bold">Textiles</h6>
-                    <small className="text-muted" style={{ fontSize: '0.7rem' }}>No mancha</small>
-                  </div>
-                </div>*/}
-              </div>
-
-              <div className="col-4">
-                {/*<div className="d-flex align-items-center gap-2">
-                  <i aria-hidden="true" className="bi bi-gem text-gold fs-5"></i>
-                  <div>
-                    <h6 className="mb-0 small fw-bold">Diseño Único</h6>
-                    <small className="text-muted" style={{ fontSize: '0.7rem' }}>Facetado & noble</small>
-                  </div>
-                </div>*/}
-              </div>
-            </div>
-
           </div>
 
           {/* Right Column: Hero Visual Showcase */}

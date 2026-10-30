@@ -1,29 +1,6 @@
 import { GEMA_STONES, BRAND_INFO } from '../data/initialData';
 
 export default function Philosophy() {
-  /*const pillars = [
-    {
-      icon: 'bi-flower2',
-      title: 'Esencias Botánicas',
-      desc: 'Seleccionamos aceites aromáticos de alta pureza y flores silvestres para crear notas olfativas envolventes y duraderas.'
-    },
-    {
-      icon: 'bi-hand-index-thumb',
-      title: 'Maceración Lenta',
-      desc: 'Cada lote reposa el tiempo exacto para que las notas de salida, corazón y fondo alcancen su máxima maduración y sutileza.'
-    },
-    {
-      icon: 'bi-droplet',
-      title: 'Cuidado Textil',
-      desc: 'Nuestros Home Sprays contienen base alcohólica refinada de evaporación rápida que protege sábanas, sillones y cortinas sin manchar.'
-    },
-    {
-      icon: 'bi-shield-check',
-      title: 'Sostenible & Artesanal',
-      desc: 'Envases de vidrio reutilizables, tapas de maderas nobles y difusores facetados que honran el cuidado del entorno.'
-    } ]*/
-
-
   const ordering = [
     {
       icon: 'bi-whatsapp',
@@ -77,23 +54,6 @@ export default function Philosophy() {
             MATIZ SILVESTRE
           </small>
         </div>
-
-        {/*<div className="row g-4">
-          {pillars.map((item, idx) => (
-            <div key={idx} className="col-12 col-md-6 col-lg-3">
-              <div className="p-4 h-100 bg-light border border-gold d-flex flex-column text-center transition-all hover-shadow">
-                <div 
-                  className="mx-auto mb-3 d-flex align-items-center justify-content-center bg-white border border-gold"
-                  style={{ width: '56px', height: '56px', borderRadius: '50%' }}
-                >
-                  <i aria-hidden="true" className={`bi ${item.icon} text-gold fs-4`}></i>
-                </div>
-                <h5 className="font-serif text-dark mb-2">{item.title}</h5>
-                <p className="text-muted small mb-0">{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>*/}
 
         {/* Cómo encargar / información útil */}
         <div className="mt-5 pt-5 border-top border-gold">
