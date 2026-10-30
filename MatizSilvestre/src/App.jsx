@@ -13,11 +13,25 @@ function App() {
   // The catalog is edited directly in src/data/initialData.js
   const products = INITIAL_PRODUCTS;
 
-  // Load cart from localStorage or fallback
+  // Load cart from localStorage or fallback with schema validation
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem('matiz_cart_v1');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(
+            (item) =>
+              item &&
+              typeof item.productId === 'string' &&
+              item.fragrance &&
+              typeof item.fragrance.id === 'string' &&
+              typeof item.quantity === 'number' &&
+              Number.isFinite(item.quantity) &&
+              item.quantity > 0
+          );
+        }
+      }
     } catch (e) {
       console.error('Error loading cart from storage:', e);
     }

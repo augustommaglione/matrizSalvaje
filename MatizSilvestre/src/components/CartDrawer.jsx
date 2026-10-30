@@ -107,7 +107,7 @@ export default function CartDrawer({
 
     const encoded = encodeURIComponent(message);
     const url = `https://wa.me/${BRAND_INFO.whatsappNumber}?text=${encoded}`;
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
