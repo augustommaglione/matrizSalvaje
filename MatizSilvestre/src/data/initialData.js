@@ -1,6 +1,9 @@
 import fotoHs200ml from '../assets/images/Hs_200ml.jpg';
 import fotoDifusorColgante from '../assets/images/Dc_8ml.jpg';
 import fotoGemaDifusor from '../assets/images/Gd_10ml.jpg';
+import fotoHs200mlDoradoLineas from '../assets/images/Hs200mlDoradoLineas.jpg';
+import fotoHs200mlPlateado from '../assets/images/Hs200mlPlateado.jpg';
+import fotoHs200mlRosa from '../assets/images/Hs200mlRosa.jpg';
 
 export const INITIAL_PRODUCTS = [
   {
@@ -21,8 +24,9 @@ export const INITIAL_PRODUCTS = [
       fotoHs200ml,
     images: [
       fotoHs200ml,
-      fotoGemaDifusor,
-      fotoDifusorColgante
+      fotoHs200mlDoradoLineas,
+      fotoHs200mlPlateado,
+      fotoHs200mlRosa
     ],
     imageAlt:
       'Home Spray y Textil Matiz Silvestre de 200 ml con gatillo dorado',
