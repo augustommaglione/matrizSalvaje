@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { BRAND_INFO, INITIAL_PRODUCTS } from '../data/initialData';
 
 export default function CartDrawer({
@@ -8,6 +9,64 @@ export default function CartDrawer({
   onRemoveItem,
   onClearCart
 }) {
+  const drawerRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previouslyFocused = document.activeElement;
+    const container = drawerRef.current;
+
+    const getFocusable = () =>
+      Array.from(
+        container?.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        ) || []
+      );
+
+    const focusable = getFocusable();
+    focusable[0]?.focus();
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onCloseRef.current();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const currentFocusable = getFocusable();
+      if (currentFocusable.length === 0) return;
+
+      const first = currentFocusable[0];
+      const last = currentFocusable[currentFocusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      if (previouslyFocused?.focus) previouslyFocused.focus();
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   // Total units per product, regardless of the chosen fragrance
@@ -117,6 +176,10 @@ export default function CartDrawer({
       onClick={onClose}
     >
       <div 
+        ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-drawer-title"
         className="position-absolute top-0 end-0 h-100 bg-white p-4 d-flex flex-column shadow-lg"
         style={{ width: '100%', maxWidth: '440px', borderLeft: '2px solid var(--color-gold)' }}
         onClick={(e) => e.stopPropagation()}
@@ -125,13 +188,13 @@ export default function CartDrawer({
         <div className="d-flex justify-content-between align-items-center pb-3 border-bottom border-gold">
           <div className="d-flex align-items-center gap-2">
             <i aria-hidden="true" className="bi bi-bag text-gold fs-4"></i>
-            <h5 className="font-serif mb-0 text-dark">Bolsa de Compras</h5>
+            <h5 id="cart-drawer-title" className="font-serif mb-0 text-dark">Bolsa de Compras</h5>
           </div>
           <button
             type="button"
             className="btn-close"
             onClick={onClose}
-            aria-label="Cerrar"
+            aria-label="Cerrar bolsa de compras"
           ></button>
         </div>
 
@@ -198,21 +261,25 @@ export default function CartDrawer({
 
                     {/* Quantity controls */}
                     <div className="d-flex align-items-center justify-content-between mt-2">
-                      <div className="btn-group btn-group-sm border">
+                      <div className="btn-group btn-group-sm border border-gold">
                         <button
                           type="button"
-                          className="btn btn-sm btn-light border-0 px-2"
+                          className="btn btn-sm btn-light border-0 px-2 d-flex align-items-center justify-content-center"
+                          style={{ minWidth: '30px', minHeight: '30px' }}
                           onClick={() => onUpdateQuantity(idx, -1)}
+                          aria-label={`Disminuir cantidad de ${getDisplayName(item)} (${item.fragrance.name})`}
                         >
                           -
                         </button>
-                        <span className="btn btn-sm btn-light border-0 disabled px-2 fw-bold text-dark">
+                        <span className="btn btn-sm btn-light border-0 disabled px-2 fw-bold text-dark d-flex align-items-center justify-content-center">
                           {item.quantity}
                         </span>
                         <button
                           type="button"
-                          className="btn btn-sm btn-light border-0 px-2"
+                          className="btn btn-sm btn-light border-0 px-2 d-flex align-items-center justify-content-center"
+                          style={{ minWidth: '30px', minHeight: '30px' }}
                           onClick={() => onUpdateQuantity(idx, 1)}
+                          aria-label={`Aumentar cantidad de ${getDisplayName(item)} (${item.fragrance.name})`}
                         >
                           +
                         </button>
@@ -227,9 +294,10 @@ export default function CartDrawer({
                   {/* Remove Button */}
                   <button
                     type="button"
-                    className="btn btn-sm text-muted p-0 position-absolute top-0 end-0 m-2"
+                    className="btn btn-sm text-muted p-1 position-absolute top-0 end-0 m-2"
                     onClick={() => onRemoveItem(idx)}
-                    title="Eliminar producto"
+                    title={`Eliminar ${getDisplayName(item)} de la bolsa`}
+                    aria-label={`Eliminar ${getDisplayName(item)} (${item.fragrance.name}) de la bolsa`}
                   >
                     <i aria-hidden="true" className="bi bi-x fs-5"></i>
                   </button>

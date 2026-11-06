@@ -106,7 +106,7 @@ function App() {
       />
 
       {/* Main Content */}
-      <main className="flex-grow-1">
+      <main id="main-content" className="flex-grow-1">
         <Hero />
         <Catalog
           products={products}

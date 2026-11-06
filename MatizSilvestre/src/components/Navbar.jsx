@@ -1,11 +1,14 @@
 export default function Navbar({ cartCount, onOpenCart }) {
   return (
     <header className="sticky-top bg-white border-bottom border-gold shadow-sm" style={{ zIndex: 1020 }}>
+      <a href="#main-content" className="skip-link">
+        Saltar al contenido principal
+      </a>
       <div className="container py-3">
 
         {/* Top row: brand + cart */}
         <div className="d-flex align-items-center justify-content-between">
-          <a href="#" className="text-decoration-none d-flex align-items-center gap-2">
+          <a href="#" className="text-decoration-none d-flex align-items-center gap-2" aria-label="Inicio - Matiz Silvestre">
             <div
               className="d-flex align-items-center justify-content-center border border-gold"
               style={{ width: '38px', height: '38px', borderRadius: '50%' }}
@@ -23,7 +26,7 @@ export default function Navbar({ cartCount, onOpenCart }) {
           </a>
 
           {/* Desktop navigation */}
-          <nav className="d-none d-md-flex align-items-center gap-4">
+          <nav className="d-none d-md-flex align-items-center gap-4" aria-label="Navegación principal">
             <a href="#catalogo" className="text-dark text-decoration-none tracking-wide fw-medium small hover-gold">
               Catálogo
             </a>
@@ -39,7 +42,7 @@ export default function Navbar({ cartCount, onOpenCart }) {
             onClick={onOpenCart}
             className="btn btn-outline-gold position-relative d-flex align-items-center gap-2 px-3 py-2"
             style={{ borderRadius: '0px' }}
-            aria-label="Abrir Carrito de Compras"
+            aria-label={`Abrir bolsa de compras (${cartCount} ${cartCount === 1 ? 'producto' : 'productos'})`}
           >
             <i aria-hidden="true" className="bi bi-bag"></i>
             <span className="d-none d-sm-inline" style={{ fontSize: '0.75rem' }}>Bolsa</span>
@@ -53,14 +56,14 @@ export default function Navbar({ cartCount, onOpenCart }) {
 
         {/* Mobile navigation */}
         <div className="d-md-none border-top border-gold mt-2 pt-2">
-          <nav className="d-flex align-items-center justify-content-around">
-            <a href="#catalogo" className="text-dark text-decoration-none small tracking-wide">
+          <nav className="d-flex align-items-center justify-content-around" aria-label="Navegación móvil">
+            <a href="#catalogo" className="text-dark text-decoration-none small tracking-wide py-2 px-2">
               Catálogo
             </a>
-            <a href="#filosofia" className="text-dark text-decoration-none small tracking-wide">
+            <a href="#filosofia" className="text-dark text-decoration-none small tracking-wide py-2 px-2">
               Filosofía
             </a>
-            <a href="#contacto" className="text-dark text-decoration-none small tracking-wide">
+            <a href="#contacto" className="text-dark text-decoration-none small tracking-wide py-2 px-2">
               Contacto
             </a>
           </nav>

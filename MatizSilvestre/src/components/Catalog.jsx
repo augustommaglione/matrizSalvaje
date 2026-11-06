@@ -332,7 +332,10 @@ export default function Catalog({ products, onAddToCart }) {
                     {/* Fragrance Selector */}
                     <div className="my-3">
                       <div className="d-flex justify-content-between align-items-center mb-2">
-                        <label className="form-label small fw-bold mb-0 text-dark">
+                        <label
+                          htmlFor={`fragrance-select-${product.id}`}
+                          className="form-label small fw-bold mb-0 text-dark"
+                        >
                           Fragancia disponible:
                         </label>
                         <small className="text-muted" style={{ fontSize: '0.72rem' }}>
@@ -341,6 +344,7 @@ export default function Catalog({ products, onAddToCart }) {
                       </div>
 
                       <select
+                        id={`fragrance-select-${product.id}`}
                         className="form-select lux-input mb-3"
                         value={selectedFragrance ? selectedFragrance.id : ''}
                         onChange={(e) => handleFragranceChange(product.id, e.target.value)}
@@ -384,7 +388,10 @@ export default function Catalog({ products, onAddToCart }) {
                     {product.hasColorSelection && (
                       <div className="mb-3">
                         <div className="d-flex justify-content-between align-items-center mb-2">
-                          <label className="form-label small fw-bold mb-0 text-dark">
+                          <label
+                            htmlFor={`color-select-${product.id}`}
+                            className="form-label small fw-bold mb-0 text-dark"
+                          >
                             Color del gatillo:
                           </label>
                           <small className="text-muted" style={{ fontSize: '0.72rem' }}>
@@ -393,6 +400,7 @@ export default function Catalog({ products, onAddToCart }) {
                         </div>
 
                         <select
+                          id={`color-select-${product.id}`}
                           className="form-select lux-input"
                           value={selectedColorName}
                           onChange={(e) => handleColorChange(product.id, e.target.value)}
@@ -410,7 +418,10 @@ export default function Catalog({ products, onAddToCart }) {
                     {product.hasStoneSelection && (
                       <div className="mb-3">
                         <div className="d-flex justify-content-between align-items-center mb-2">
-                          <label className="form-label small fw-bold mb-0 text-dark">
+                          <label
+                            htmlFor={`stone-select-${product.id}`}
+                            className="form-label small fw-bold mb-0 text-dark"
+                          >
                             Piedra de la gema:
                           </label>
                           <small className="text-muted" style={{ fontSize: '0.72rem' }}>
@@ -419,6 +430,7 @@ export default function Catalog({ products, onAddToCart }) {
                         </div>
 
                         <select
+                          id={`stone-select-${product.id}`}
                           className="form-select lux-input"
                           value={selectedStoneName}
                           onChange={(e) => handleStoneChange(product.id, e.target.value)}
@@ -448,9 +460,11 @@ export default function Catalog({ products, onAddToCart }) {
                         <div className="col-4">
                           <div className="input-group border border-gold">
                             <button
-                              className="btn btn-sm btn-outline-secondary border-0 px-2"
+                              className="btn btn-sm btn-outline-secondary border-0 px-2 d-flex align-items-center justify-content-center"
+                              style={{ minWidth: '28px', minHeight: '30px' }}
                               type="button"
                               onClick={() => handleQuantityChange(product.id, -1)}
+                              aria-label={`Disminuir cantidad para ${product.name}`}
                             >
                               -
                             </button>
@@ -459,11 +473,14 @@ export default function Catalog({ products, onAddToCart }) {
                               className="form-control form-control-sm text-center border-0 bg-transparent fw-bold p-0"
                               value={productSelection.quantity}
                               readOnly
+                              aria-label={`Cantidad seleccionada para ${product.name}`}
                             />
                             <button
-                              className="btn btn-sm btn-outline-secondary border-0 px-2"
+                              className="btn btn-sm btn-outline-secondary border-0 px-2 d-flex align-items-center justify-content-center"
+                              style={{ minWidth: '28px', minHeight: '30px' }}
                               type="button"
                               onClick={() => handleQuantityChange(product.id, 1)}
+                              aria-label={`Aumentar cantidad para ${product.name}`}
                             >
                               +
                             </button>
@@ -475,6 +492,7 @@ export default function Catalog({ products, onAddToCart }) {
                             type="button"
                             onClick={() => handleAdd(product)}
                             className="btn btn-gold w-100 py-2 d-flex align-items-center justify-content-center gap-2"
+                            aria-label={`Agregar ${product.name} a la bolsa`}
                           >
                             <i aria-hidden="true" className="bi bi-bag-plus"></i>
                             <span>Agregar</span>
